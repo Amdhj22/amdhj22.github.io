@@ -11,9 +11,11 @@ tags:
 
 ## 카테고리
 
+- [[Programming Language/Programming Language|Programming Language]]
+  - [[Programming Language/Go/Go|Go]]
+  - [[Programming Language/Rust/Rust|Rust]]
+  - [[Programming Language/Ruby/Ruby|Ruby]]
 - [[Kubernetes/Kubernetes|Kubernetes]]
-- [[Go/Go|Go]]
-- [[Rust/Rust|Rust]]
 
 ## 규칙
 
