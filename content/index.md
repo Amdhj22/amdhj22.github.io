@@ -39,7 +39,6 @@ GitHub Actions · Helm · External Secrets · Kong · Keycloak
   - [[Programming Language/Go/Go|Go]] — Goroutine, Channel, Context, Project Layout
   - [[Programming Language/Rust/Rust|Rust]] — Ownership, Trait, Cargo, Module System
   - [[Programming Language/Ruby/Ruby|Ruby]] — Basics, rbenv
-- [[Kubernetes/Kubernetes|Kubernetes]]
 
 ---
 
