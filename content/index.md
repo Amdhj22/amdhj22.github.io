@@ -1,25 +1,49 @@
 ---
-createdAt: '2026-04-07 15:55'
-tags:
-  - til
-  - index
+title: Andy Eum
+tags: []
 ---
 
-# TIL (Today I Learned)
+# Andy Eum
 
-> 매일 배운 것들을 기록하는 공간. GitHub Public TIL Repo + Quartz 홈페이지와 자동 동기화.
+> Backend & DevOps Engineer · Development Team Lead
 
-## 카테고리
+Medical AI 회사에서 인프라와 백엔드를 담당하고 있습니다.  
+IEC 62304 / ISO 13485 환경에서 신뢰성 있는 소프트웨어를 만드는 데 집중합니다.
+
+---
+
+## 🛠️ Stack
+
+**Languages** — Go · Rust · Python · Kotlin · TypeScript
+
+**DevOps / Infra** — Kubernetes (EKS, NKS) · ArgoCD · Karpenter · Terraform  
+GitHub Actions · Helm · External Secrets · Kong · Keycloak
+
+**Tools** — Neovim · tmux · Ghostty · lazygit · Obsidian
+
+---
+
+## 🌱 Currently
+
+- **Rust** 학습 중 — CLI 툴 개발 ([clipboard-rs](https://github.com/Amdhj22/clipboard-rs))
+- **AWS Solutions Architect Associate** 준비 중
+- 이 노트 공간 운영 중 — Obsidian → GitHub → Quartz 자동 배포 파이프라인
+
+---
+
+## 📝 TIL
+
+매일 배운 것들을 기록합니다.
 
 - [[Programming Language/Programming Language|Programming Language]]
-  - [[Programming Language/Go/Go|Go]]
-  - [[Programming Language/Rust/Rust|Rust]]
-  - [[Programming Language/Ruby/Ruby|Ruby]]
+  - [[Programming Language/Go/Go|Go]] — Goroutine, Channel, Context, Project Layout
+  - [[Programming Language/Rust/Rust|Rust]] — Ownership, Trait, Cargo, Module System
+  - [[Programming Language/Ruby/Ruby|Ruby]] — Basics, rbenv
 - [[Kubernetes/Kubernetes|Kubernetes]]
 
-## 규칙
+---
 
-- 파일명 형식: `YYYY-MM-DD - 제목.md`
-- 공개할 노트: frontmatter에 `publish: true` 추가
-- TIL Repo 복사: `Resources/TIL/` 전체 (publish 여부 무관)
-- Quartz 빌드: `publish: true` 노트만 포함
+## 🔗 Links
+
+- [GitHub](https://github.com/Amdhj22)
+- [TIL Repository](https://github.com/Amdhj22/til)
