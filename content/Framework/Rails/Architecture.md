@@ -1,5 +1,5 @@
 ---
-createdAt: '2026-04-07 18:00'
+created: '2026-04-07 18:00'
 tags:
   - til
   - rails
