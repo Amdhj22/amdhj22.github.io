@@ -1,3 +1,37 @@
 @use "./base.scss";
 
-// put your custom CSS here!
+// Dracula theme heading colors
+// Dark mode: Dracula 원색, Light mode: 가독성을 위한 어두운 변형
+article {
+  // Dark mode (Dracula 원색)
+  :root[saved-theme="dark"] & {
+    h1 { color: #bd93f9; } // purple
+    h2 { color: #ffb86c; } // orange
+    h3 { color: #50fa7b; } // green
+    h4 { color: #ff79c6; } // pink
+    h5 { color: #f1fa8c; } // yellow
+    h6 { color: #8be9fd; } // cyan
+  }
+
+  // Light mode (채도 낮춘 어두운 변형)
+  :root[saved-theme="light"] & {
+    h1 { color: #7c5fbd; } // purple
+    h2 { color: #c47c2e; } // orange
+    h3 { color: #3d9e54; } // green
+    h4 { color: #c4527a; } // pink
+    h5 { color: #9ea020; } // yellow
+    h6 { color: #0e9bbf; } // cyan
+  }
+}
+
+// anchor 링크(#)도 동일한 색 유지
+article h1,
+article h2,
+article h3,
+article h4,
+article h5,
+article h6 {
+  & > a[role="anchor"] {
+    color: inherit !important;
+  }
+}
