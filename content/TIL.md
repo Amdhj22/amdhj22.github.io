@@ -26,6 +26,12 @@ tags:
 
 - [[Middleware/Middleware|Middleware]]
 
+- [[Database/Database|Database]]
+
+- [[Security/Security|Security]]
+
+- [[Architecture/Architecture|Architecture]]
+
 ## 규칙
 
 - 파일명 형식: `YYYY-MM-DD - 제목.md`
