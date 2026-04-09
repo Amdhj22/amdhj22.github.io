@@ -18,6 +18,8 @@ export type ContentDetails = {
   content: string
   richContent?: string
   date?: Date
+  created?: Date
+  modified?: Date
   description?: string
 }
 
@@ -114,6 +116,8 @@ export const ContentIndex: QuartzEmitterPlugin<Partial<Options>> = (opts) => {
               ? escapeHTML(toHtml(tree as Root, { allowDangerousHtml: true }))
               : undefined,
             date: date,
+            created: file.data.dates?.created,
+            modified: file.data.dates?.modified,
             description: file.data.description ?? "",
           })
         }
@@ -145,7 +149,14 @@ export const ContentIndex: QuartzEmitterPlugin<Partial<Options>> = (opts) => {
           // for the RSS feed
           delete content.description
           delete content.date
-          return [slug, content]
+          const created = content.created
+          const modified = content.modified
+          delete content.created
+          delete content.modified
+          return [
+            slug,
+            { ...content, created: created?.toISOString(), modified: modified?.toISOString() },
+          ]
         }),
       )
 

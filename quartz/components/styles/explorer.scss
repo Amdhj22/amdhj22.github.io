@@ -280,3 +280,66 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
     }
   }
 }
+
+.explorer-recent {
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--lightgray);
+
+  .explorer-recent-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.35rem;
+  }
+
+  .explorer-recent-ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    & li > a {
+      color: var(--dark);
+      opacity: 0.75;
+      font-size: 0.9rem;
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.6;
+
+      &:hover {
+        opacity: 1;
+        color: var(--tertiary);
+      }
+
+      &.active {
+        opacity: 1;
+        color: var(--tertiary);
+      }
+    }
+  }
+}
+
+li[data-year-group] > .folder-container {
+  margin-top: 0.4rem;
+
+  & .folder-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--gray) !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  & .folder-icon {
+    color: var(--gray);
+  }
+}
+
+li[data-year-group]:first-child > .folder-container {
+  margin-top: 0;
+}

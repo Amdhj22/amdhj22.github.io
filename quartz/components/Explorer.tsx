@@ -120,6 +120,10 @@ export default ((userOpts?: Partial<Options>) => {
           </svg>
         </button>
         <div id={id} class="explorer-content" aria-expanded={false} role="group">
+          <div class="explorer-recent">
+            <span class="explorer-recent-label">Recent</span>
+            <ul class="explorer-recent-ul" />
+          </div>
           <OverflowList class="explorer-ul" />
         </div>
         <template id="template-file">

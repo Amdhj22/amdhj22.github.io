@@ -2,6 +2,10 @@ import { FileTrieNode } from "../../util/fileTrie"
 import { FullSlug, resolveRelative, simplifySlug } from "../../util/path"
 import { ContentDetails } from "../../plugins/emitters/contentIndex"
 
+type ContentDetailsWithDates = ContentDetails & { created?: string; modified?: string }
+
+const RECENT_COUNT = 5
+
 type MaybeHTMLElement = HTMLElement | undefined
 
 interface ParsedOptions {
@@ -77,6 +81,99 @@ function toggleFolder(evt: MouseEvent) {
 
   const stringifiedFileTree = JSON.stringify(currentExplorerState)
   localStorage.setItem("fileTree", stringifiedFileTree)
+}
+
+function renderRecentNotes(
+  currentSlug: FullSlug,
+  entries: [FullSlug, ContentDetailsWithDates][],
+  recentUl: Element,
+) {
+  const fileEntries = entries.filter(([slug, d]) => !slug.endsWith("/index") && d.created)
+  fileEntries.sort(([, a], [, b]) => {
+    return new Date(b.created!).getTime() - new Date(a.created!).getTime()
+  })
+
+  const top = fileEntries.slice(0, RECENT_COUNT)
+  recentUl.innerHTML = ""
+
+  for (const [slug, details] of top) {
+    const li = document.createElement("li")
+    const a = document.createElement("a")
+    a.href = resolveRelative(currentSlug, slug)
+    a.dataset.for = slug
+    a.textContent = details.title || slug.split("/").pop() || slug
+    if (currentSlug === slug) a.classList.add("active")
+    li.appendChild(a)
+    recentUl.appendChild(li)
+  }
+}
+
+function groupTrieByYear(
+  trie: FileTrieNode,
+  entries: [FullSlug, ContentDetailsWithDates][],
+): Map<number, FileTrieNode[]> {
+  const slugToYear = new Map<string, number>()
+  for (const [slug, details] of entries) {
+    if (details.created) {
+      const year = new Date(details.created).getFullYear()
+      slugToYear.set(slug, year)
+    }
+  }
+
+  const getEarliestYear = (node: FileTrieNode): number | undefined => {
+    if (!node.isFolder && slugToYear.has(node.slug)) {
+      return slugToYear.get(node.slug)
+    }
+    const childYears = node.children
+      .map(getEarliestYear)
+      .filter((y): y is number => y !== undefined)
+    return childYears.length > 0 ? Math.min(...childYears) : undefined
+  }
+
+  const groups = new Map<number, FileTrieNode[]>()
+  for (const child of trie.children) {
+    const year = getEarliestYear(child) ?? new Date().getFullYear()
+    if (!groups.has(year)) groups.set(year, [])
+    groups.get(year)!.push(child)
+  }
+  return groups
+}
+
+function createYearGroupNode(
+  currentSlug: FullSlug,
+  year: number,
+  children: FileTrieNode[],
+  opts: ParsedOptions,
+): HTMLLIElement {
+  const template = document.getElementById("template-folder") as HTMLTemplateElement
+  const clone = template.content.cloneNode(true) as DocumentFragment
+  const li = clone.querySelector("li") as HTMLLIElement
+  const folderContainer = li.querySelector(".folder-container") as HTMLElement
+  const titleContainer = folderContainer.querySelector("div") as HTMLElement
+  const folderOuter = li.querySelector(".folder-outer") as HTMLElement
+  const ul = folderOuter.querySelector("ul") as HTMLUListElement
+
+  folderContainer.dataset.folderpath = `year-${year}`
+  li.dataset.yearGroup = String(year)
+
+  const span = titleContainer.querySelector(".folder-title") as HTMLElement
+  span.textContent = String(year)
+
+  const isCollapsed =
+    currentExplorerState.find((item) => item.path === `year-${year}`)?.collapsed ?? false
+
+  if (!isCollapsed) {
+    folderOuter.classList.add("open")
+  }
+
+  for (const child of children) {
+    const childNode = child.isFolder
+      ? createFolderNode(currentSlug, child, opts)
+      : createFileNode(currentSlug, child)
+    ul.appendChild(childNode)
+  }
+
+  return li
 }
 
 function createFileNode(currentSlug: FullSlug, node: FileTrieNode): HTMLLIElement {
@@ -177,7 +274,7 @@ async function setupExplorer(currentSlug: FullSlug) {
     )
 
     const data = await fetchData
-    const entries = [...Object.entries(data)] as [FullSlug, ContentDetails][]
+    const entries = [...Object.entries(data)] as [FullSlug, ContentDetailsWithDates][]
     const trie = FileTrieNode.fromEntries(entries)
 
     // Apply functions in order
@@ -197,28 +294,45 @@ async function setupExplorer(currentSlug: FullSlug) {
 
     // Get folder paths for state management
     const folderPaths = trie.getFolderPaths()
-    currentExplorerState = folderPaths.map((path) => {
+    const yearGroups = groupTrieByYear(trie, entries)
+    const yearPaths = [...yearGroups.keys()].map((y) => `year-${y}`)
+
+    currentExplorerState = [...yearPaths, ...folderPaths].map((path) => {
       const previousState = oldIndex.get(path)
+      const isYearGroup = path.startsWith("year-")
       return {
         path,
         collapsed:
-          previousState === undefined ? opts.folderDefaultState === "collapsed" : previousState,
+          previousState === undefined
+            ? isYearGroup
+              ? false
+              : opts.folderDefaultState === "collapsed"
+            : previousState,
       }
     })
 
     const explorerUl = explorer.querySelector(".explorer-ul")
     if (!explorerUl) continue
 
-    // Create and insert new content
-    const fragment = document.createDocumentFragment()
-    for (const child of trie.children) {
-      const node = child.isFolder
-        ? createFolderNode(currentSlug, child, opts)
-        : createFileNode(currentSlug, child)
-
-      fragment.appendChild(node)
+    const recentUl = explorer.querySelector(".explorer-recent-ul")
+    if (recentUl) {
+      renderRecentNotes(currentSlug, entries, recentUl)
     }
-    explorerUl.insertBefore(fragment, explorerUl.firstChild)
+
+    const overflowEnd = explorerUl.querySelector(".overflow-end")
+    while (explorerUl.firstChild && explorerUl.firstChild !== overflowEnd) {
+      explorerUl.removeChild(explorerUl.firstChild)
+    }
+
+    const fragment = document.createDocumentFragment()
+    const sortedYears = [...yearGroups.keys()].sort((a, b) => b - a)
+
+    for (const year of sortedYears) {
+      const children = yearGroups.get(year)!
+      const yearLi = createYearGroupNode(currentSlug, year, children, opts)
+      fragment.appendChild(yearLi)
+    }
+    explorerUl.insertBefore(fragment, overflowEnd ?? null)
 
     // restore explorer scrollTop position if it exists
     const scrollTop = sessionStorage.getItem("explorerScrollTop")
