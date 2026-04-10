@@ -1,5 +1,5 @@
 ---
-createdAt: '2026-04-09 18:38'
+created: '2026-04-09 18:38'
 tags:
   - til
   - rust
