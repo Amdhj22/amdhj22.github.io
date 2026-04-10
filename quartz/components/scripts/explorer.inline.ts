@@ -83,15 +83,21 @@ function toggleFolder(evt: MouseEvent) {
   localStorage.setItem("fileTree", stringifiedFileTree)
 }
 
+function getRecentDate(d: ContentDetailsWithDates): number {
+  const updated = d.modified ? new Date(d.modified).getTime() : 0
+  const created = d.created ? new Date(d.created).getTime() : 0
+  return Math.max(updated, created)
+}
+
 function renderRecentNotes(
   currentSlug: FullSlug,
   entries: [FullSlug, ContentDetailsWithDates][],
   recentUl: Element,
 ) {
-  const fileEntries = entries.filter(([slug, d]) => !slug.endsWith("/index") && d.created)
-  fileEntries.sort(([, a], [, b]) => {
-    return new Date(b.created!).getTime() - new Date(a.created!).getTime()
-  })
+  const fileEntries = entries.filter(
+    ([slug, d]) => !slug.endsWith("/index") && (d.modified || d.created),
+  )
+  fileEntries.sort(([, a], [, b]) => getRecentDate(b) - getRecentDate(a))
 
   const top = fileEntries.slice(0, RECENT_COUNT)
   recentUl.innerHTML = ""
