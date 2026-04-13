@@ -1,5 +1,6 @@
 ---
 created: '2026-04-09 09:00'
+updated: '2026-04-13 00:00'
 tags:
   - til
   - database
@@ -105,4 +106,4 @@ SET lock:resource "owner_id" NX EX 30
 
 ---
 
-**Related**: [[Database]] | [[NoSQL]] | [[SQL]]
+**Related**: [[Database]] | [[Redis Eviction]] | [[Redis Sentinel]] | [[NoSQL]] | [[SQL]]

@@ -15,4 +15,5 @@ tags:
 - [[Rails/Rails|Rails]] — Ruby on Rails
 - [[Spring/Spring|Spring]] — Spring Boot (Kotlin/Java)
 - [[Gin/Gin|Gin]] — Go HTTP Framework
+- [[Bubble Tea/Bubble Tea|Bubble Tea]] — Go TUI Framework (Charm)
 - [[FastAPI/FastAPI|FastAPI]] — Python Async Web Framework
