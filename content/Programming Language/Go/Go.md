@@ -4,6 +4,7 @@ tags:
   - til
   - go
   - index
+updated: '2026-04-13 17:52'
 ---
 
 # Go
@@ -16,3 +17,6 @@ Go 관련 TIL 모음.
 - [[Channel]]
 - [[Context]]
 - [[Project Layout]]
+- [[Sync]]
+- [[Atomic]]
+- [[Concurrency]]
