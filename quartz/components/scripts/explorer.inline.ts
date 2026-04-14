@@ -4,6 +4,9 @@ import { ContentDetails } from "../../plugins/emitters/contentIndex"
 
 type ContentDetailsWithDates = ContentDetails & { created?: string; modified?: string }
 
+type TagInfo = { name: string; slug: string; count: number }
+type TagCategoryData = { category: string; tags: TagInfo[] }
+
 const RECENT_COUNT = 5
 
 type MaybeHTMLElement = HTMLElement | undefined
@@ -257,6 +260,142 @@ function createFolderNode(
   return li
 }
 
+function buildTagCategoryData(
+  entries: [FullSlug, ContentDetailsWithDates][],
+): TagCategoryData[] {
+  // Group tags by top-level folder (category)
+  const categoryTagCounts = new Map<string, Map<string, number>>()
+
+  for (const [slug, details] of entries) {
+    const tags = details.tags ?? []
+    if (tags.length === 0) continue
+    // Skip index/folder notes
+    if (slug.endsWith("/index")) continue
+
+    // Derive category from first path segment
+    const segments = slug.split("/")
+    const category = segments.length > 1 ? segments[0] : "기타"
+
+    if (!categoryTagCounts.has(category)) {
+      categoryTagCounts.set(category, new Map())
+    }
+    const tagCounts = categoryTagCounts.get(category)!
+    for (const tag of tags) {
+      // Skip meta tags like "til", "index"
+      if (tag === "til" || tag === "index") continue
+      tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1)
+    }
+  }
+
+  // Remove empty categories
+  for (const [cat, tags] of categoryTagCounts) {
+    if (tags.size === 0) categoryTagCounts.delete(cat)
+  }
+
+  const sortedCategories = [...categoryTagCounts.keys()].sort((a, b) => a.localeCompare(b))
+
+  return sortedCategories.map((category) => {
+    const tagCounts = categoryTagCounts.get(category)!
+    const tags: TagInfo[] = [...tagCounts.entries()]
+      .map(([name, count]) => ({
+        name,
+        slug: name
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .replace(/[^\w-]/g, ""),
+        count,
+      }))
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
+    return { category, tags }
+  })
+}
+
+function renderTagView(
+  container: HTMLElement,
+  categories: TagCategoryData[],
+  baseDir: string,
+) {
+  container.innerHTML = ""
+
+  const savedCategories: string[] = JSON.parse(
+    localStorage.getItem("tag-categories-open") ?? "[]",
+  )
+
+  for (const cat of categories) {
+    const catDiv = document.createElement("div")
+    catDiv.className = "tag-category"
+
+    const header = document.createElement("button")
+    header.className = "tag-category-header"
+    header.type = "button"
+    header.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="5 8 14 8"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round" class="tag-category-icon">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+      <span>${cat.category}</span>
+    `
+
+    const body = document.createElement("div")
+    body.className = "tag-category-body"
+    if (savedCategories.includes(cat.category)) {
+      body.classList.add("open")
+    }
+
+    const ul = document.createElement("ul")
+    ul.className = "tag-pill-list"
+
+    for (const t of cat.tags) {
+      const li = document.createElement("li")
+      const a = document.createElement("a")
+      a.href = `${baseDir}/tags/${t.slug}`
+      a.className = "internal tag-link"
+      a.innerHTML = `${t.name}<span class="tag-count">${t.count}</span>`
+      li.appendChild(a)
+      ul.appendChild(li)
+    }
+
+    body.appendChild(ul)
+    catDiv.appendChild(header)
+    catDiv.appendChild(body)
+    container.appendChild(catDiv)
+
+    // Toggle handler
+    const toggleHandler = () => {
+      body.classList.toggle("open")
+      // Save state
+      const openCats: string[] = []
+      document.querySelectorAll(".tag-category").forEach((c) => {
+        const b = c.querySelector(".tag-category-body")
+        const n = c.querySelector(".tag-category-header span")?.textContent ?? ""
+        if (b?.classList.contains("open") && n) openCats.push(n)
+      })
+      localStorage.setItem("tag-categories-open", JSON.stringify(openCats))
+    }
+    header.addEventListener("click", toggleHandler)
+    window.addCleanup(() => header.removeEventListener("click", toggleHandler))
+  }
+}
+
+function switchExplorerView(view: "year" | "tag") {
+  localStorage.setItem("explorer-active-view", view)
+
+  document.querySelectorAll(".explorer-tab").forEach((tab) => {
+    const tabEl = tab as HTMLElement
+    if (tabEl.dataset.view === view) {
+      tabEl.classList.add("active")
+    } else {
+      tabEl.classList.remove("active")
+    }
+  })
+
+  const yearView = document.querySelector("[data-explorer-view='year']") as MaybeHTMLElement
+  const tagView = document.querySelector("[data-explorer-view='tag']") as MaybeHTMLElement
+  if (yearView) yearView.style.display = view === "year" ? "" : "none"
+  if (tagView) tagView.style.display = view === "tag" ? "" : "none"
+}
+
 async function setupExplorer(currentSlug: FullSlug) {
   const allExplorers = document.querySelectorAll("div.explorer") as NodeListOf<HTMLElement>
 
@@ -350,6 +489,57 @@ async function setupExplorer(currentSlug: FullSlug) {
       if (activeElement) {
         activeElement.scrollIntoView({ behavior: "smooth" })
       }
+    }
+
+    // Build tag view if enabled
+    const enableTagView = explorer.dataset.enableTagView === "true"
+    if (enableTagView) {
+      const tagContainer = explorer.querySelector(".tag-explorer") as MaybeHTMLElement
+      if (tagContainer) {
+        const categories = buildTagCategoryData(entries)
+        // Derive baseDir from current slug
+        const depth = currentSlug.split("/").length - 1
+        const baseDir = depth > 0 ? Array(depth).fill("..").join("/") : "."
+        renderTagView(tagContainer, categories, baseDir)
+
+        // Highlight active tag
+        const tagMatch = currentSlug.match(/^tags\/(.+)$/)
+        if (tagMatch) {
+          const activeTag = tagContainer.querySelector(
+            `a.tag-link[href$='/tags/${CSS.escape(tagMatch[1])}']`,
+          ) as MaybeHTMLElement
+          if (activeTag) activeTag.classList.add("is-active")
+        }
+      }
+
+      // Restore active view
+      const savedView = localStorage.getItem("explorer-active-view") as "year" | "tag" | null
+      const activeView = savedView === "tag" ? "tag" : "year"
+
+      const yearView = explorer.querySelector("[data-explorer-view='year']") as MaybeHTMLElement
+      const tagView = explorer.querySelector("[data-explorer-view='tag']") as MaybeHTMLElement
+      if (yearView && tagView) {
+        yearView.style.display = activeView === "year" ? "" : "none"
+        tagView.style.display = activeView === "tag" ? "" : "none"
+      }
+
+      // Update tab active states
+      explorer.querySelectorAll(".explorer-tab").forEach((tab) => {
+        const tabEl = tab as HTMLElement
+        if (tabEl.dataset.view === activeView) {
+          tabEl.classList.add("active")
+        } else {
+          tabEl.classList.remove("active")
+        }
+      })
+
+      // Tab click handlers
+      explorer.querySelectorAll(".explorer-tab").forEach((tab) => {
+        const tabEl = tab as HTMLElement
+        const handler = () => switchExplorerView(tabEl.dataset.view as "year" | "tag")
+        tabEl.addEventListener("click", handler)
+        window.addCleanup(() => tabEl.removeEventListener("click", handler))
+      })
     }
 
     // Set up event handlers

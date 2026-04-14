@@ -27,6 +27,12 @@ export const defaultContentPageLayout: PageLayout = {
   ],
   left: [
     Component.PageTitle(),
+    Component.SocialLinks({
+      links: [
+        { icon: "github", href: "https://github.com/Amdhj22", label: "GitHub" },
+        { icon: "mail", href: "mailto:amdhj22@gmail.com", label: "Email" },
+      ],
+    }),
     Component.MobileOnly(Component.Spacer()),
     Component.Flex({
       components: [
@@ -38,7 +44,7 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.ReaderMode() },
       ],
     }),
-    Component.Explorer(),
+    Component.Explorer({ enableTagView: true }),
   ],
   right: [
     Component.Graph(),
@@ -52,6 +58,12 @@ export const defaultListPageLayout: PageLayout = {
   beforeBody: [Component.Breadcrumbs(), Component.ArticleTitle(), Component.ContentMeta()],
   left: [
     Component.PageTitle(),
+    Component.SocialLinks({
+      links: [
+        { icon: "github", href: "https://github.com/Amdhj22", label: "GitHub" },
+        { icon: "mail", href: "mailto:amdhj22@gmail.com", label: "Email" },
+      ],
+    }),
     Component.MobileOnly(Component.Spacer()),
     Component.Flex({
       components: [
@@ -62,7 +74,7 @@ export const defaultListPageLayout: PageLayout = {
         { Component: Component.Darkmode() },
       ],
     }),
-    Component.Explorer(),
+    Component.Explorer({ enableTagView: true }),
   ],
   right: [],
 }

@@ -343,3 +343,127 @@ li[data-year-group] > .folder-container {
 li[data-year-group]:first-child > .folder-container {
   margin-top: 0;
 }
+
+// Explorer tabs
+.explorer-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 0.25rem;
+  border-bottom: 1px solid var(--lightgray);
+
+  .explorer-tab {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 0.2rem 0.6rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: var(--darkgray);
+    font-family: var(--headerFont);
+    margin-bottom: -1px;
+
+    &.active {
+      color: var(--secondary);
+      border-bottom-color: var(--secondary);
+      font-weight: 600;
+    }
+
+    &:hover:not(.active) {
+      color: var(--dark);
+    }
+  }
+}
+
+// Tag explorer
+.tag-explorer {
+  padding: 0.25rem 0;
+}
+
+.tag-category {
+  margin-bottom: 0.4rem;
+}
+
+.tag-category-header {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.15rem 0;
+  color: var(--secondary);
+  font-family: var(--headerFont);
+  font-size: 0.8rem;
+  font-weight: $semiBoldWeight;
+  gap: 0.25rem;
+
+  .tag-category-icon {
+    transition: transform 0.3s ease;
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    color: var(--tertiary);
+  }
+}
+
+.tag-category-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease-in-out;
+
+  &.open {
+    grid-template-rows: 1fr;
+  }
+
+  > .tag-pill-list {
+    overflow: hidden;
+  }
+}
+
+.tag-category:has(> .tag-category-body:not(.open)) > .tag-category-header .tag-category-icon {
+  transform: rotate(-90deg);
+}
+
+.tag-pill-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.2rem 0 0.2rem 0.2rem;
+  margin: 0;
+
+  li {
+    margin: 0;
+  }
+
+  a.internal.tag-link {
+    font-size: 0.85rem;
+    padding: 0.15rem 0.4rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    white-space: nowrap;
+    color: var(--dark);
+    opacity: 0.75;
+
+    &:hover {
+      opacity: 1;
+      color: var(--tertiary);
+    }
+
+    &.is-active {
+      color: var(--secondary);
+      font-weight: 600;
+      opacity: 1;
+    }
+
+    .tag-count {
+      font-size: 0.7rem;
+      opacity: 0.45;
+      font-weight: normal;
+      margin-left: 0.1rem;
+    }
+  }
+}

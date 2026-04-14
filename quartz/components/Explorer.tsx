@@ -20,6 +20,7 @@ export interface Options {
   filterFn: (node: FileTrieNode) => boolean
   mapFn: (node: FileTrieNode) => void
   order: OrderEntries[]
+  enableTagView?: boolean
 }
 
 const defaultOptions: Options = {
@@ -69,6 +70,7 @@ export default ((userOpts?: Partial<Options>) => {
         data-behavior={opts.folderClickBehavior}
         data-collapsed={opts.folderDefaultState}
         data-savestate={opts.useSavedState}
+        data-enable-tag-view={opts.enableTagView ?? false}
         data-data-fns={JSON.stringify({
           order: opts.order,
           sortFn: opts.sortFn.toString(),
@@ -124,7 +126,24 @@ export default ((userOpts?: Partial<Options>) => {
             <span class="explorer-recent-label">Recent</span>
             <ul class="explorer-recent-ul" />
           </div>
-          <OverflowList class="explorer-ul" />
+          {opts.enableTagView && (
+            <div class="explorer-tabs">
+              <button class="explorer-tab active" data-view="year">
+                연도
+              </button>
+              <button class="explorer-tab" data-view="tag">
+                태그
+              </button>
+            </div>
+          )}
+          <div data-explorer-view="year">
+            <OverflowList class="explorer-ul" />
+          </div>
+          {opts.enableTagView && (
+            <div data-explorer-view="tag" style="display:none">
+              <div class="tag-explorer" />
+            </div>
+          )}
         </div>
         <template id="template-file">
           <li>
