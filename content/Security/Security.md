@@ -13,6 +13,7 @@ publish: true
 
 ## 카테고리
 
+- [[IDS IPS WAF]] — 방화벽, IDS/IPS 탐지 방식, WAF, 암호화 트래픽 처리 차이
 - Application Security (SAST, DAST, IAST, Fuzzing)
 - Cloud Security
 - Compliance (ISO 27001, ISO 27018)

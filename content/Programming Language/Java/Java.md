@@ -3,40 +3,22 @@ created: '2026-04-16 10:00'
 tags:
   - til
   - java
+  - index
+publish: true
 ---
 
 # Java
 
-> [!info] description
+Java 관련 TIL 모음.
 
-### Content
+## 목록
 
-```folder-overview
-id: java-til-overview
-folderPath: ""
-title: "{{folderName}} overview"
-showTitle: false
-depth: 3
-style: explorer
-includeTypes:
-  - folder
-  - markdown
-disableFileTag: false
-sortBy: name
-sortByAsc: true
-showEmptyFolders: false
-onlyIncludeSubfolders: false
-storeFolderCondition: true
-showFolderNotes: false
-disableCollapseIcon: true
-alwaysCollapse: false
-autoSync: true
-allowDragAndDrop: true
-hideLinkList: true
-hideFolderOverview: false
-useActualLinks: false
-fmtpIntegration: false
-titleSize: 1
-isInCallout: false
-useWikilinks: true
-```
+- [[Language Basics]] — 컴파일 과정, 접근 제어자, 제네릭, 불변 객체, String
+- [[OOP]] — 4대 특성, 인터페이스 vs 추상 클래스, Overloading/Overriding
+- [[JVM Memory & GC]] — 메모리 구조, GC, Process vs Thread
+- [[Multi-Thread 동시성]] — synchronized, volatile, Atomic/CAS
+- [[JPA]] — 영속성 컨텍스트, N+1 문제, Fetch Join
+
+---
+
+**Related**: [[../Programming Language|Programming Language]]
