@@ -31,6 +31,7 @@ export const defaultContentPageLayout: PageLayout = {
       links: [
         { icon: "github", href: "https://github.com/Amdhj22", label: "GitHub" },
         { icon: "mail", href: "mailto:amdhj22@gmail.com", label: "Email" },
+        { icon: "rss", href: "/index.xml", label: "RSS" },
       ],
     }),
     Component.MobileOnly(Component.Spacer()),
@@ -62,6 +63,7 @@ export const defaultListPageLayout: PageLayout = {
       links: [
         { icon: "github", href: "https://github.com/Amdhj22", label: "GitHub" },
         { icon: "mail", href: "mailto:amdhj22@gmail.com", label: "Email" },
+        { icon: "rss", href: "/index.xml", label: "RSS" },
       ],
     }),
     Component.MobileOnly(Component.Spacer()),
