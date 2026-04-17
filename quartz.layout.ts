@@ -5,7 +5,25 @@ import * as Component from "./quartz/components"
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [],
-  afterBody: [],
+  afterBody: [
+    Component.Comments({
+      provider: "giscus",
+      options: {
+        repo: "Amdhj22/amdhj22.github.io",
+        repoId: "R_kgDOR72Y3g",
+        category: "General",
+        categoryId: "DIC_kwDOR72Y3s4C7DJb",
+        mapping: "pathname",
+        strict: false,
+        reactionsEnabled: true,
+        inputPosition: "bottom",
+        lang: "ko",
+        themeUrl: "https://giscus.app/themes",
+        lightTheme: "light",
+        darkTheme: "dark_dimmed",
+      },
+    }),
+  ],
   footer: Component.Footer({
     links: {
       GitHub: "https://github.com/jackyzha0/quartz",
