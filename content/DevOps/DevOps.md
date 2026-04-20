@@ -18,6 +18,7 @@ publish: true
 - [[Auto Scaling & Spot Instance]] — HPA/VPA/CA, Spot 비용 최적화
 - [[Istio]] — 서비스 메시, Envoy Sidecar, mTLS
 - [[K8s Storage]] — PV/PVC, Rook Ceph 분산 스토리지
+- [[K8s Control Plane]] — apiserver/etcd/scheduler/controller-manager 역할과 통신 토폴로지
 
 ---
 
