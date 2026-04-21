@@ -92,14 +92,17 @@ function getRecentDate(d: ContentDetailsWithDates): number {
   return Math.max(updated, created)
 }
 
+const RECENT_EXCLUDED_BASENAMES = new Set(["index", "readme", "til"])
+
 function renderRecentNotes(
   currentSlug: FullSlug,
   entries: [FullSlug, ContentDetailsWithDates][],
   recentUl: Element,
 ) {
-  const fileEntries = entries.filter(
-    ([slug, d]) => !slug.endsWith("/index") && (d.modified || d.created),
-  )
+  const fileEntries = entries.filter(([slug, d]) => {
+    const basename = slug.split("/").pop()?.toLowerCase() ?? ""
+    return !RECENT_EXCLUDED_BASENAMES.has(basename) && (d.modified || d.created)
+  })
   fileEntries.sort(([, a], [, b]) => getRecentDate(b) - getRecentDate(a))
 
   const top = fileEntries.slice(0, RECENT_COUNT)
