@@ -1,5 +1,5 @@
 ---
-createdAt: '2026-04-14'
+created: '2026-04-14'
 tags:
   - golang
   - river
