@@ -1,26 +1,27 @@
 @use "./base.scss";
 
-// Dracula theme heading colors
-// Dark mode: Dracula 원색, Light mode: 가독성을 위한 어두운 변형
+// RBR (Red Bull Racing) heading colors
+// Two-accent scheme: kerb_red + rb_yellow are the "loud" pair,
+// supporting headings use pastel accents that step back.
 article {
-  // Dark mode (Dracula 원색)
+  // Dark mode — RBR Classic accents on navy base
   :root[saved-theme="dark"] & {
-    h1 { color: #bd93f9; } // purple
-    h2 { color: #ffb86c; } // orange
-    h3 { color: #50fa7b; } // green
-    h4 { color: #ff79c6; } // pink
-    h5 { color: #f1fa8c; } // yellow
-    h6 { color: #8be9fd; } // cyan
+    h1 { color: #e84a55; } // kerb_red (primary)
+    h2 { color: #ffd84d; } // rb_yellow (secondary)
+    h3 { color: #82a0d8; } // oracle_blue
+    h4 { color: #b8d49e; } // paddock_green
+    h5 { color: #e8b498; } // crowd_orange
+    h6 { color: #95c0c8; } // teal
   }
 
-  // Light mode (채도 낮춘 어두운 변형)
+  // Light mode — darker variants that pass contrast on white
   :root[saved-theme="light"] & {
-    h1 { color: #7c5fbd; } // purple
-    h2 { color: #c47c2e; } // orange
-    h3 { color: #3d9e54; } // green
-    h4 { color: #c4527a; } // pink
-    h5 { color: #9ea020; } // yellow
-    h6 { color: #0e9bbf; } // cyan
+    h1 { color: #cc1e4a; } // kerb_pure
+    h2 { color: #b8860b; } // deeper gold (yellow on white is illegible)
+    h3 { color: #4a6ba8; } // darker oracle_blue
+    h4 { color: #5a8040; } // darker paddock_green
+    h5 { color: #b8664a; } // darker crowd_orange
+    h6 { color: #4a7a82; } // darker teal
   }
 }
 
