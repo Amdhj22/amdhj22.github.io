@@ -15,6 +15,7 @@ tags:
   - [[Programming Language/Go/Go|Go]] — Goroutine, Channel, Context, Project Layout
   - [[Programming Language/Rust/Rust|Rust]] — Ownership, Trait, Cargo, Module System
   - [[Programming Language/Ruby/Ruby|Ruby]] — Basics, rbenv
+  - [[Programming Language/Python/Python|Python]] — Perceptual Luminance, PIL, uv, Poetry, tenacity
 
 - [[Framework/Framework|Framework]]
   - [[Framework/Gin/Gin|Gin]] — Go HTTP Framework

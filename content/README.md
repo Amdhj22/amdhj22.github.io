@@ -18,6 +18,7 @@ Backend/DevOps 엔지니어로 일하며 배운 내용들을 정리합니다.
 - **Go** — Goroutine, Channel, Context, Project Layout
 - **Rust** — Ownership, Trait, Cargo, Module System
 - **Ruby** — Basics, rbenv
+- **Python** — Perceptual Luminance, PIL, uv, Poetry, tenacity
 
 ### Framework
 - **Gin** — Go HTTP Framework

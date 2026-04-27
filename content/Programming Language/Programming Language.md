@@ -15,3 +15,4 @@ tags:
 - [[Go/Go|Go]]
 - [[Rust/Rust|Rust]]
 - [[Ruby/Ruby|Ruby]]
+- [[Python/Python|Python]]
