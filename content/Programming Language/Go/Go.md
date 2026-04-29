@@ -4,7 +4,7 @@ tags:
   - til
   - go
   - index
-updated: '2026-04-17 14:15'
+updated: '2026-04-29 18:31'
 ---
 
 # Go
@@ -21,3 +21,4 @@ Go 관련 TIL 모음.
 - [[Atomic]]
 - [[Concurrency]]
 - [[errgroup]]
+- [[errors.Join]]
