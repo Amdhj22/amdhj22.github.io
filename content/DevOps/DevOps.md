@@ -18,6 +18,7 @@ publish: true
 - [[Auto Scaling & Spot Instance]] — HPA/VPA/CA, Spot 비용 최적화
 - [[Istio]] — 서비스 메시, Envoy Sidecar, mTLS
 - [[K8s]] — Control Plane, Storage 등 Kubernetes 관련 TIL
+- [[GitHub Actions Secret Newline]] — secret 값에 trailing newline 섞이면 HTTP header invalid value
 
 ---
 
