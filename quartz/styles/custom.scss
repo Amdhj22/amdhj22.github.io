@@ -1,38 +1,137 @@
 @use "./base.scss";
 
-// RBR (Red Bull Racing) heading colors
-// Two-accent scheme: kerb_red + rb_yellow are the "loud" pair,
-// supporting headings use pastel accents that step back.
+/* ============================================================================
+   RBR (Red Bull Racing) — port of https://github.com/Amdhj22/rbr.obsidian
+   to Quartz 4.
+
+   Three-accent doctrine:
+     · Kerb Red    (#e84a55) — what's active / selected
+     · RB Yellow   (#ffd84d) — what needs attention
+     · Chequer White (#fff) — functions / methods, third dominant accent
+
+   Most palette tokens already live in quartz.config.ts; this file paints
+   the surfaces Quartz exposes only through CSS (headings, blockquote,
+   tags, bold, etc.) so the published site reads as RBR, not just navy.
+   ============================================================================ */
+
+:root {
+  /* RBR palette — single source of truth for selectors below. */
+  --rbr-kerb-red: #e84a55;
+  --rbr-kerb-red-pure: #cc1e4a;
+  --rbr-kerb-red-bright: #f56570;
+  --rbr-rb-yellow: #ffd84d;
+  --rbr-rb-pure: #ffc906;
+  --rbr-chequer-white: #ffffff;
+  --rbr-oracle-blue: #82a0d8;
+  --rbr-sky-blue: #a4bde8;
+  --rbr-paddock-green: #b8d49e;
+  --rbr-track-green: #9cc080;
+  --rbr-livery-blue-bright: #4d7eff;
+  --rbr-base: #0a1128;
+  --rbr-text: #c8d0e8;
+}
+
+/* ----------------------------------------------------------------------------
+   Headings — RBR trio (h1=red · h2=yellow · h3=white) plus support tier.
+   Light mode uses darker variants because pure yellow/white fail contrast.
+   ---------------------------------------------------------------------------- */
 article {
-  // Dark mode — RBR Classic accents on navy base
   :root[saved-theme="dark"] & {
-    h1 { color: #e84a55; } // kerb_red (primary)
-    h2 { color: #ffd84d; } // rb_yellow (secondary)
-    h3 { color: #82a0d8; } // oracle_blue
-    h4 { color: #b8d49e; } // paddock_green
-    h5 { color: #e8b498; } // crowd_orange
-    h6 { color: #95c0c8; } // teal
+    h1 { color: var(--rbr-kerb-red); }
+    h2 { color: var(--rbr-rb-yellow); }
+    h3 { color: var(--rbr-chequer-white); }
+    h4 { color: var(--rbr-paddock-green); }
+    h5 { color: var(--rbr-oracle-blue); }
+    h6 { color: var(--rbr-sky-blue); }
   }
 
-  // Light mode — darker variants that pass contrast on white
   :root[saved-theme="light"] & {
-    h1 { color: #cc1e4a; } // kerb_pure
-    h2 { color: #b8860b; } // deeper gold (yellow on white is illegible)
-    h3 { color: #4a6ba8; } // darker oracle_blue
-    h4 { color: #5a8040; } // darker paddock_green
-    h5 { color: #b8664a; } // darker crowd_orange
-    h6 { color: #4a7a82; } // darker teal
+    h1 { color: var(--rbr-kerb-red-pure); }
+    h2 { color: #b8860b; }            // yellow on white is illegible — fall back to dark gold
+    h3 { color: #1a1f3a; }            // chequer-white → near-black for contrast
+    h4 { color: #5a8040; }            // darker paddock-green
+    h5 { color: #4a6ba8; }            // darker oracle-blue
+    h6 { color: #4a7a82; }            // teal — third support tier
   }
 }
 
-// anchor 링크(#)도 동일한 색 유지
-article h1,
-article h2,
-article h3,
-article h4,
-article h5,
-article h6 {
-  & > a[role="anchor"] {
-    color: inherit !important;
+/* anchor (#) link inside heading inherits the heading color */
+article :is(h1, h2, h3, h4, h5, h6) > a[role="anchor"] {
+  color: inherit !important;
+}
+
+/* ----------------------------------------------------------------------------
+   Bold / strong — chequer-white in dark mode is the RBR signature for "the
+   important word in this sentence." In light mode keep near-black for contrast.
+   ---------------------------------------------------------------------------- */
+:root[saved-theme="dark"] article {
+  strong, b, p > strong {
+    color: var(--rbr-chequer-white);
   }
+}
+
+/* ----------------------------------------------------------------------------
+   Italic — livery-blue accent (RBR doctrine: "italic = quietly different")
+   ---------------------------------------------------------------------------- */
+:root[saved-theme="dark"] article em {
+  color: var(--rbr-livery-blue-bright);
+}
+
+/* ----------------------------------------------------------------------------
+   Blockquote — keep the kerb-red side bar from base.scss, add the subtle
+   red wash from the Obsidian theme so quotes feel branded, not bolted on.
+   ---------------------------------------------------------------------------- */
+article blockquote {
+  background-color: rgba(232, 74, 85, 0.06);
+  border-radius: 0 5px 5px 0;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+/* ----------------------------------------------------------------------------
+   Tag pills — RB yellow background, black text. Tags are the "look here" cue
+   in RBR; yellow over base navy is the highest-attention pairing in the palette.
+   Quartz renders tag links as <a class="internal tag-link">; we override the
+   default link styling for that class only.
+   ---------------------------------------------------------------------------- */
+a.internal.tag-link {
+  background-color: var(--rbr-rb-yellow);
+  color: #000000;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 0.05rem 0.5rem;
+
+  &:hover {
+    background-color: var(--rbr-rb-pure);
+    color: #000000;
+  }
+}
+
+/* The "#" prefix already comes from base.scss via ::before — make sure it
+   inherits the black tag color instead of the link color. */
+a.internal.tag-link::before {
+  color: inherit;
+}
+
+/* ----------------------------------------------------------------------------
+   Inline code — soft surface tint so it visibly separates from prose without
+   stealing attention. Block code is left to shiki (github-dark / github-light).
+   ---------------------------------------------------------------------------- */
+:root[saved-theme="dark"] {
+  p code,
+  li code,
+  td code {
+    background-color: rgba(31, 42, 82, 0.6);  // rbr-surface-2 @ 60%
+    color: var(--rbr-chequer-white);
+    border-radius: 3px;
+    padding: 0.05rem 0.3rem;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   Selection — accent-tinted, so dragging through text feels on-brand.
+   ---------------------------------------------------------------------------- */
+::selection {
+  background-color: rgba(232, 74, 85, 0.25);
+  color: inherit;
 }
