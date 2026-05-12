@@ -37,5 +37,5 @@ tags:
 
 - 파일명 형식: `YYYY-MM-DD - 제목.md`
 - 공개할 노트: frontmatter에 `publish: true` 추가
-- TIL Repo 복사: `Resources/TIL/` 전체 (publish 여부 무관)
+- TIL Repo 복사: `TIL/` 전체 (publish 여부 무관)
 - Quartz 빌드: `publish: true` 노트만 포함
