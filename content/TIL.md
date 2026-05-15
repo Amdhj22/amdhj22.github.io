@@ -1,5 +1,6 @@
 ---
 created: '2026-04-07 15:55'
+updated: '2026-05-15 17:56'
 tags:
   - til
   - index
@@ -32,6 +33,10 @@ tags:
 - [[Security/Security|Security]]
 
 - [[Architecture/Architecture|Architecture]]
+
+- [[AI/AI|AI]] — LLM/AI 에이전트 개념, 워크플로우 패턴
+
+- [[MISC/MISC|MISC]] — 잡다한 잔여 (Dotfiles 등)
 
 ## 규칙
 
