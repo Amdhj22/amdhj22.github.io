@@ -5,7 +5,7 @@ tags:
   - devops
   - index
 publish: true
-updated: '2026-06-09 18:30'
+updated: '2026-07-08 15:20'
 ---
 
 # DevOps
@@ -20,7 +20,8 @@ updated: '2026-06-09 18:30'
 - [[Istio]] — 서비스 메시, Envoy Sidecar, mTLS
 - [[K8s]] — Control Plane, Storage 등 Kubernetes 관련 TIL
 - [[GitHub Actions Secret Newline]] — secret 값에 trailing newline 섞이면 HTTP header invalid value
-- [[2026-06-09 - Terraform이 조용히 되돌리는 3가지 순간]] — config/state/live 3자 관계, tfvars 우선순위, state 평문 시크릿
+- [[Terraform이 조용히 되돌리는 3가지 순간]] — config/state/live 3자 관계, tfvars 우선순위, state 평문 시크릿
+- [[NAT Gateway vs VPC Endpoint]] — Gateway Endpoint 무료 원리, Interface Endpoint 과금 반전, 실전 gotcha
 
 ---
 
