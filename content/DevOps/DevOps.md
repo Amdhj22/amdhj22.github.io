@@ -5,7 +5,7 @@ tags:
   - devops
   - index
 publish: true
-updated: '2026-07-13 11:00'
+updated: '2026-11-12 19:18'
 ---
 
 # DevOps
@@ -21,6 +21,7 @@ updated: '2026-07-13 11:00'
 - [[K8s]] — Control Plane, Storage 등 Kubernetes 관련 TIL
 - [[Terraform이 조용히 되돌리는 3가지 순간]] — config/state/live 3자 관계, tfvars 우선순위, state 평문 시크릿
 - [[NAT Gateway vs VPC Endpoint]] — Gateway Endpoint 무료 원리, Interface Endpoint 과금 반전, 실전 gotcha
+- [[Caddy vs Nginx]] — 인증서 수명주기 소유권, Caddyfile directive 순서, 플러그인 vs 내장 기능, 선택 기준
 
 ---
 
